@@ -1,5 +1,5 @@
 import styles from "./App.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import toast, { Toaster } from "react-hot-toast";
 import type { Movie } from "../../types/movie";
@@ -27,6 +27,12 @@ export default function App() {
     placeholderData: (prevData) => prevData,
     staleTime: 1000 * 60 * 5,
   });
+
+  useEffect(() => {
+    if (isSuccess && data && data.results.length === 0) {
+      toast.error("No movies found for your request..");
+    }
+  }, [isSuccess, data]);
 
   const handleSearch = (query: string) => {
     if (!query.trim()) {
